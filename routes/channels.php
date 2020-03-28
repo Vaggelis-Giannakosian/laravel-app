@@ -1,5 +1,5 @@
 <?php
-
+namespace Router;
 use Illuminate\Support\Facades\Broadcast;
 
 /*

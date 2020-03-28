@@ -1,5 +1,8 @@
 <?php
 
+
+namespace Router;
+
 use Illuminate\Support\Facades\Route;
 
 /*
