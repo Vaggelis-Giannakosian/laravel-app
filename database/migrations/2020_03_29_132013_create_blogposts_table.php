@@ -13,11 +13,11 @@ class CreateBlogpostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('blogposts', function (Blueprint $table) {
+        Schema::create('blog_posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('slug');
-            $table->text('content');
+            $table->string('slug')->nullable();
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateBlogpostsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blogposts');
+        Schema::dropIfExists('blog_posts');
     }
 }

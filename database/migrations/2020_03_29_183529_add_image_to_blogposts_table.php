@@ -13,7 +13,7 @@ class AddImageToBlogpostsTable extends Migration
      */
     public function up()
     {
-        Schema::table('blogposts', function (Blueprint $table) {
+        Schema::table('blog_posts', function (Blueprint $table) {
             $table->string('image')->nullable()->after('content');
         });
     }
@@ -25,7 +25,7 @@ class AddImageToBlogpostsTable extends Migration
      */
     public function down()
     {
-        Schema::table('blogposts', function (Blueprint $table) {
+        Schema::table('blog_posts', function (Blueprint $table) {
             $table->dropColumn('image');
         });
     }
