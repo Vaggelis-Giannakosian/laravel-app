@@ -13,7 +13,6 @@
 <ul>
     <li><a href="{{ route('home') }}">Home Page</a></li>
     <li><a href="{{ route('contact') }}">Contact Page</a></li>
-    <li><a href="{{ route('blog-post',['1','0']) }}">Blog Post 1</a></li>
 </ul>
 
 @yield('content')
