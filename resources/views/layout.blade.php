@@ -13,6 +13,7 @@
 <ul>
     <li><a href="{{ route('home') }}">Home Page</a></li>
     <li><a href="{{ route('contact') }}">Contact Page</a></li>
+    <li><a href="{{ route('posts.index') }}">Blog Page</a></li>
 </ul>
 
 @yield('content')
