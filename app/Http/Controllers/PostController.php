@@ -54,8 +54,16 @@ class PostController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy(BlogPost $post)
     {
-        //
+       $result = $post->delete();
+//       $result = BlogPost::destroy($post->id);
+
+        request()->session()->flash('status','Blog post was deleted!');
+
+       if(!$result)
+           request()->session()->flash('status','There was an error. Please try again');
+
+       return redirect()->route('posts.index');
     }
 }
