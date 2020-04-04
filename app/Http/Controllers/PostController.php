@@ -47,9 +47,10 @@ class PostController extends Controller
     public function update(StorePost $request, BlogPost $post )
     {
         $validatedData = $request->validated();
-        $post->update($validatedData);
+//        $post->update($validatedData);
+        $post->fill($validatedData)->save();
         request()->session()->flash('status','Blog post was updated!');
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.show',['post'=>$post->id]);
     }
 
 

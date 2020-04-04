@@ -6,7 +6,12 @@
 
     @forelse($posts as $post)
         <div>
-          <h1>  <a href="{{ route('posts.show',['post'=>$post->id]) }}" target="_blank">{{ $post->title }}</a>&emsp;<a href="{{ route('posts.edit',['post'=>$post->id]) }}">Edit</a></h1>
+          <h3>
+              <a href="{{ route('posts.show',['post'=>$post->id]) }}" >{{ $post->title }}</a>
+          </h3>
+
+            <a href="{{ route('posts.edit',['post'=>$post->id]) }}">Edit</a>
+
             <p>{{ $post->content }}</p>
         </div>
     @empty
