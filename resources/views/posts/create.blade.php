@@ -10,19 +10,19 @@
        @include('posts._form')
 
 
-        @if($errors->any())
-            <div>
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>
-                            {{ $error }}
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+{{--        @if($errors->any())--}}
+{{--            <div>--}}
+{{--                <ul>--}}
+{{--                    @foreach($errors->all() as $error)--}}
+{{--                        <li>--}}
+{{--                            {{ $error }}--}}
+{{--                        </li>--}}
+{{--                    @endforeach--}}
+{{--                </ul>--}}
+{{--            </div>--}}
+{{--        @endif--}}
 
-        <button type="submit">Create!</button>
+        <button class="btn btn-primary" type="submit">Create</button>
 
     </form>
 

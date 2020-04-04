@@ -10,11 +10,11 @@
               <a href="{{ route('posts.show',['post'=>$post->id]) }}" >{{ $post->title }}</a>
           </h3>
 
-            <a href="{{ route('posts.edit',['post'=>$post->id]) }}">Edit</a>
-            <form action="{{ route('posts.destroy',['post'=>$post->id]) }}" method="POST">
+            <a class="btn btn-primary" href="{{ route('posts.edit',['post'=>$post->id]) }}" >Edit</a>
+            <form class="fm-inline" action="{{ route('posts.destroy',['post'=>$post->id]) }}" method="POST">
                 @method('DELETE')
                 @csrf
-                <button type="submit">DELETE</button>
+                <button type="submit" class="btn btn-primary">DELETE</button>
             </form>
             <p>{{ $post->content }}</p>
         </div>

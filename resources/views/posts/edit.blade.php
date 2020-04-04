@@ -6,10 +6,10 @@
         @method('PUT')
 
         @csrf
-        
+
         @include('posts._form')
 
-        <button type="submit">Update</button>
+        <button  class="btn btn-primary" type="submit">Update</button>
 
     </form>
 @endsection
