@@ -19,4 +19,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/','HomeController@home')->name('home');
 Route::get('contact','HomeController@contact')->name('contact');
-Route::resource('/posts','PostController')->only(['index','show','create','store']);
+Route::resource('/posts','PostController')->only(['index','show','create','store','edit','update']);
