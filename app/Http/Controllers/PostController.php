@@ -22,7 +22,9 @@ class PostController extends Controller
 
     public function store(StorePost $request)
     {
-        $validatedData = $request->validate();
+        $validatedData = $request->validated();
+//        ($post = new BlogPost($validatedData))->save();
+
         $post = BlogPost::create($validatedData);
         request()->session()->flash('status','Blog post was created!');
         return redirect()->route('posts.show',['post'=>$post->id]);
@@ -42,9 +44,12 @@ class PostController extends Controller
     }
 
 
-    public function update(StorePost $request,BlogPost $post )
+    public function update(StorePost $request, BlogPost $post )
     {
-        dd($post);
+        $validatedData = $request->validated();
+        $post->update($validatedData);
+        request()->session()->flash('status','Blog post was updated!');
+        return redirect()->route('posts.index');
     }
 
 

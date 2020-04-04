@@ -9,7 +9,7 @@
 
         <p>
             <label for="title">Title</label>
-            <input type="text" name="title" id="title">
+            <input type="text" name="title" id="title" value="{{ old('title') }}">
         </p>
 
         @error('title')
@@ -20,7 +20,7 @@
         <p>
             <label for="content">Content</label>
             <textarea name="content" id="content" cols="30" rows="10"
-                      placeholder="Write the content here..."></textarea>
+                      placeholder="Write the content here...">{{ old('content') }}</textarea>
         </p>
 
         @error('content')

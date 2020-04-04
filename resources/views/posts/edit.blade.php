@@ -2,7 +2,8 @@
 
 
 @section('content')
-    <form action="{{ route('posts.update',['post'=>$post->id]) }}" method="PUT">
+    <form action="{{ route('posts.update',['post'=>$post->id]) }}" method="POST">
+        @method('PATCH')
 
         @csrf
 
@@ -28,7 +29,7 @@
         @enderror
 
 
-        <button type="submit">Update!</button>
+        <button type="submit">Update</button>
 
     </form>
 @endsection
