@@ -23,7 +23,10 @@ class PostController extends Controller
 //        dd(DB::getQueryLog());
 
 
-        return view('posts.index', ['posts' => BlogPost::all()->sortByDesc("created_at")]);
+        return view(
+            'posts.index',
+            [ 'posts' => BlogPost::withCount('comments')->get()->sortByDesc("created_at") ]
+        );
     }
 
     public function create()

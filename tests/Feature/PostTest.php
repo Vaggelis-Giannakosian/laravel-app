@@ -37,6 +37,7 @@ class PostTest extends TestCase
             'content' => 'Test post content',
         ]);
         $response->assertSeeText('Test Post');
+        $response->assertSeeText('No comments yet!');
         $response->assertDontSeeText('Test post content');
         $response->assertStatus(200);
     }
