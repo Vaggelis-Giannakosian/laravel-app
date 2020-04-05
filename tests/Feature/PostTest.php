@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\BlogPost;
+use App\Comment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Ramsey\Collection\Collection;
@@ -24,9 +25,9 @@ class PostTest extends TestCase
     }
 
 
-    public function test_See_One_Blog_Post_When_There_Is_Only_One(){
+    public function test_See_One_Blog_Post_When_There_Is_Only_One_With_No_Comments(){
 
-        // Arrang
+        // Arrange
         $post = $this->createDummyPost();
 
         // Act
@@ -38,6 +39,29 @@ class PostTest extends TestCase
         ]);
         $response->assertSeeText('Test Post');
         $response->assertSeeText('No comments yet!');
+        $response->assertDontSeeText('Test post content');
+        $response->assertStatus(200);
+    }
+
+    public function test_See_One_Blog_Post_When_There_Is_Only_One_With_Comments(){
+
+        // Arrange
+        $post = $this->createDummyPost();
+        $comments = factory(Comment::class,4)->create(['blog_post_id'=>$post->id]);
+
+
+        // Act
+        $response = $this->get('/posts');
+        // Assert
+
+        $this->assertDatabaseHas('blog_posts', [
+            'content' => 'Test post content',
+        ]);
+        $this->assertDatabaseHas('comments', [
+            'blog_post_id'=> $post->id
+        ]);
+        $response->assertSeeText('Test Post');
+        $response->assertSeeText('4 comments');
         $response->assertDontSeeText('Test post content');
         $response->assertStatus(200);
     }
