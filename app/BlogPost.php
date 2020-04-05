@@ -13,4 +13,10 @@ class BlogPost extends Model
         'updated_at'
     ];
 
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
+
 }
