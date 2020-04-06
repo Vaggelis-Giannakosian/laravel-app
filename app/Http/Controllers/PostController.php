@@ -73,11 +73,8 @@ class PostController extends Controller
        $result = $post->delete();
 //       $result = BlogPost::destroy($post->id);
 
-        request()->session()->flash('status','Blog post was deleted!');
-
-       if(!$result)
-           request()->session()->flash('status','There was an error. Please try again');
-
+        $flashMessage =  $result ? 'Blog post was deleted!' : 'There was an error. Please try again';
+        request()->session()->flash('status',$flashMessage);
        return redirect()->route('posts.index');
     }
 }

@@ -47,7 +47,7 @@ class PostTest extends TestCase
 
         // Arrange
         $post = $this->createDummyPost();
-        $comments = factory(Comment::class,4)->create(['blog_post_id'=>$post->id]);
+        factory(Comment::class,4)->create(['blog_post_id'=>$post->id]);
 
 
         // Act
@@ -188,11 +188,7 @@ class PostTest extends TestCase
 
     private function createDummyPost() : BlogPost
     {
-        $post = new BlogPost();
-        $post->title = 'Test Post';
-        $post->content = 'Test post content';
-        $post->save();
-        return $post;
+        return factory(BlogPost::class)->states('test-post')->create();
     }
 
 
