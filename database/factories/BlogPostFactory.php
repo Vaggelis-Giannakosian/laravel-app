@@ -18,3 +18,13 @@ $factory->state(App\BlogPost::class, 'test-post',function(Faker $faker){
         'content'=>'Test post content'
     ];
 });
+
+$factory->state(App\BlogPost::class, 'with-comments',function(Faker $faker){
+    return[
+
+    ];
+});
+
+$factory->afterCreatingState(App\BlogPost::class,'with-comments',function(BlogPost $post, Faker $faker){
+    $post->comments()->saveMany(factory(App\Comment::class,$faker->randomNumber(1))->make());
+});
