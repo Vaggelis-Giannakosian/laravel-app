@@ -71,7 +71,7 @@ class PostTest extends TestCase
     public function test_Store_Post_Valid()
     {
         $params = ['title'=>'New post','content'=>'content of this particular post'];
-        $response = $this->post('/posts',$params);
+        $response = $this->actingAs($this->user())->post('/posts',$params);
         $response->assertStatus(302);
         $response->assertSessionHas('status');
 
@@ -85,7 +85,7 @@ class PostTest extends TestCase
     public function test_Store_Post_Not_Valid()
     {
         $params = ['title'=>'New','content'=>'post'];
-        $response = $this->post('/posts',$params);
+        $response = $this->actingAs($this->user())->post('/posts',$params);
         $response->assertStatus(302);
         $response->assertSessionMissing('status');
 
@@ -104,15 +104,14 @@ class PostTest extends TestCase
     }
     public function test_Update_Post_Valid()
     {
-
-        //Arrange section
+          //Arrange section
         $post = $this->createDummyPost();
         $this->assertDatabaseHas('blog_posts', ['title'=>'Test Post','content'=>'Test post content']);
 
         $params = ['title'=>'New Post updated','content'=>'Post content updated'];
 
         //Act section
-        $response = $this->patch("/posts/{$post->id}",$params);
+        $response = $this->actingAs($this->user())->patch("/posts/{$post->id}",$params);
 
         //Assert section
         $response->assertStatus(302);
@@ -144,7 +143,7 @@ class PostTest extends TestCase
         $params = ['title'=>'New','content'=>'Post'];
 
         //Act section
-        $response = $this->patch("/posts/{$post->id}",$params);
+        $response = $this->actingAs($this->user())->patch("/posts/{$post->id}",$params);
 
         //Assert section
         $response->assertStatus(302);
@@ -177,7 +176,7 @@ class PostTest extends TestCase
         $this->assertDatabaseHas('blog_posts',['id'=>$post->id,'title'=>'Test Post','content'=>'Test post content']);
 
 
-        $response = $this->delete("/posts/{$post->id}");
+        $response = $this->actingAs($this->user())->delete("/posts/{$post->id}");
 
         $response->assertStatus(302);
         $response->assertSessionHas('status');
