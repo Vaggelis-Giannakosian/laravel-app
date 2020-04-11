@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BlogPost extends Model
 {
+
+    use SoftDeletes;
+
     protected $fillable = ['title','content'];
 
     protected $dates = [
@@ -13,6 +17,14 @@ class BlogPost extends Model
         'updated_at'
     ];
 
+    //HANDLING MODEL EVENTS
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function(BlogPost $blogPost){
+            $blogPost->comments()->delete();
+        });
+    }
 
     public function comments()
     {
