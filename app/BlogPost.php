@@ -21,6 +21,7 @@ class BlogPost extends Model
     public static function boot()
     {
         parent::boot();
+        //needed so as to perform soft delete on comments (although there already exists a cascade constraint)
         static::deleting(function(BlogPost $blogPost){
             $blogPost->comments()->delete();
         });
