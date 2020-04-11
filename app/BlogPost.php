@@ -25,6 +25,10 @@ class BlogPost extends Model
         static::deleting(function(BlogPost $blogPost){
             $blogPost->comments()->delete();
         });
+
+        static::restored(function(BlogPost $blogPost){
+            $blogPost->comments()->restore();
+        });
     }
 
     public function comments()
