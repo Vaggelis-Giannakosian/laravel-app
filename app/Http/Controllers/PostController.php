@@ -6,6 +6,7 @@ use App\BlogPost;
 use App\Http\Requests\StorePost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -60,12 +61,19 @@ class PostController extends Controller
 
     public function edit(BlogPost $post)
     {
+        $this->authorize('update-post',$post);
         return view('posts.edit',['post'=>$post]);
     }
 
 
     public function update(StorePost $request, BlogPost $post )
     {
+        $this->authorize('update-post',$post);
+//        if(Gate::denies('update-post',$post))
+//        {
+//            abort(403, "You can't edit this post");
+//        }
+
         $validatedData = $request->validated();
 //        $post->update($validatedData);
         $post->fill($validatedData)->save();
@@ -76,6 +84,8 @@ class PostController extends Controller
 
     public function destroy(BlogPost $post)
     {
+        $this->authorize('delete-post',$post);
+
        $result = $post->delete();
 //       $result = BlogPost::destroy($post->id);
 
