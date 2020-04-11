@@ -21,7 +21,7 @@ $factory->state(App\BlogPost::class, 'test-post',function(Faker $faker){
 
 $factory->state(App\BlogPost::class, 'with-comments',function(Faker $faker){
     return[
-
+        //leave empty if dont want to change any of the values
     ];
 });
 

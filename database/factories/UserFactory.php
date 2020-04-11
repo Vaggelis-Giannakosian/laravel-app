@@ -26,3 +26,12 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
     ];
 });
+
+
+$factory->state(User::class, 'vag',function(Faker $faker){
+    return[
+        'name' => 'Vagelis Giannakosian',
+        'email' => 'e.giannakosian@gmail.com',
+        'password' => '$2y$10$yQan4fTAJtb.U7ZEv7ZdKOxKB7QiPiw.qZH6qi4wsv/.TqmKUxG6.', // 123456789
+    ];
+});
