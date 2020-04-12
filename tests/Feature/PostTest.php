@@ -105,13 +105,14 @@ class PostTest extends TestCase
     public function test_Update_Post_Valid()
     {
           //Arrange section
-        $post = $this->createDummyPost();
-        $this->assertDatabaseHas('blog_posts', ['title'=>'Test Post','content'=>'Test post content']);
+        $user = $this->user();
+        $post = $this->createDummyPost($user->id);
+        $this->assertDatabaseHas('blog_posts', ['user_id'=>$user->id,'title'=>'Test Post','content'=>'Test post content']);
 
         $params = ['title'=>'New Post updated','content'=>'Post content updated'];
 
         //Act section
-        $response = $this->actingAs($this->user())->patch("/posts/{$post->id}",$params);
+        $response = $this->actingAs($user)->patch("/posts/{$post->id}",$params);
 
         //Assert section
         $response->assertStatus(302);
@@ -137,13 +138,14 @@ class PostTest extends TestCase
     {
 
         //Arrange section
-        $post = $this->createDummyPost();
+        $user = $this->user();
+        $post = $this->createDummyPost($user->id);
         $this->assertDatabaseHas('blog_posts', ['id'=>$post->id,'title'=>'Test Post','content'=>'Test post content']);
 
         $params = ['title'=>'New','content'=>'Post'];
 
         //Act section
-        $response = $this->actingAs($this->user())->patch("/posts/{$post->id}",$params);
+        $response = $this->actingAs($user)->patch("/posts/{$post->id}",$params);
 
         //Assert section
         $response->assertStatus(302);
@@ -172,11 +174,11 @@ class PostTest extends TestCase
     public function test_Post_Destroy_Working()
     {
 
-        $post = $this->createDummyPost();
+        $user = $this->user();
+        $post = $this->createDummyPost($user->id);
         $this->assertDatabaseHas('blog_posts',['id'=>$post->id,'title'=>'Test Post','content'=>'Test post content']);
 
-
-        $response = $this->actingAs($this->user())->delete("/posts/{$post->id}");
+        $response = $this->actingAs($user)->delete("/posts/{$post->id}");
 
         $response->assertStatus(302);
         $response->assertSessionHas('status');
@@ -187,9 +189,11 @@ class PostTest extends TestCase
     }
 
 
-    private function createDummyPost() : BlogPost
+    private function createDummyPost($userId=null) : BlogPost
     {
-        return factory(BlogPost::class)->states('test-post')->create();
+        return factory(BlogPost::class)->states('test-post')->create([
+            'user_id' => $userId ?? $this->user()->id,
+        ]);
     }
 
 
