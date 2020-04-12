@@ -37,6 +37,7 @@ class PostController extends Controller
 
     public function create()
     {
+//        $this->authorize('posts.create');
         return view('posts.create');
     }
 
@@ -61,14 +62,14 @@ class PostController extends Controller
 
     public function edit(BlogPost $post)
     {
-        $this->authorize('update-post',$post);
+        $this->authorize( 'posts.update',$post);
         return view('posts.edit',['post'=>$post]);
     }
 
 
     public function update(StorePost $request, BlogPost $post )
     {
-        $this->authorize('update-post',$post);
+        $this->authorize( 'posts.update',$post);
 //        if(Gate::denies('update-post',$post))
 //        {
 //            abort(403, "You can't edit this post");
@@ -84,7 +85,7 @@ class PostController extends Controller
 
     public function destroy(BlogPost $post)
     {
-        $this->authorize('delete-post',$post);
+        $this->authorize('posts.delete',$post);
 
        $result = $post->delete();
 //       $result = BlogPost::destroy($post->id);
