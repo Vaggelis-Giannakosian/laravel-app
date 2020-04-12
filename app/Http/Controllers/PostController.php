@@ -31,7 +31,9 @@ class PostController extends Controller
 
         return view(
             'posts.index',
-            [ 'posts' => BlogPost::withCount('comments')->get()->sortByDesc("created_at") ]
+            [ 'posts' => BlogPost::latest()->withCount('comments')->get(),
+               'most_commented'=>BlogPost::mostCommented()->take(5)->get()
+            ]
         );
     }
 
@@ -56,7 +58,15 @@ class PostController extends Controller
 
     public function show(BlogPost $post)
     {
-        $comments = $post->comments()->orderBy('created_at', 'desc')->get();
+        $comments = $post->comments()->get();
+//        another way
+//        $comments = BlogPost::with(['comments'=>function($query){
+//            return $query->latest();
+//        }])->findOrFail($post->id)->comments;
+
+//        simpler way
+
+
         return view('posts.show', compact('post','comments'));
     }
 
