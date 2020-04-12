@@ -76,7 +76,7 @@
 
             <div class="row">
 
-                <div class="card" style="width: 100%">
+                <div class="card mt-4" style="width: 100%">
                     <div class="card-body">
                         <h5 class="card-title">Most Active Users</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Users with most posts written</h6>
@@ -87,7 +87,26 @@
                                 {{ $user->name }} ({{ $user->posts_count }})
                             </li>
                         @empty
-                            <li class="list-group-item">No Authors yet</li>
+                            <li class="list-group-item">No Users found</li>
+                        @endforelse
+                    </ul>
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="card mt-4" style="width: 100%">
+                    <div class="card-body">
+                        <h5 class="card-title">Most Active Users Last Month</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Users with most posts written in the last month</h6>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        @forelse($mostActiveLastMonth as $user)
+                            <li class="list-group-item">
+                                {{ $user->name }} ({{ $user->posts_count }})
+                            </li>
+                        @empty
+                            <li class="list-group-item">No Users found</li>
                         @endforelse
                     </ul>
                 </div>

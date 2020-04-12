@@ -19,7 +19,7 @@ class PostTest extends TestCase
      */
     public function testNo_Blog_Posts_When_Nothing_In_Database()
     {
-        $response = $this->get('/posts');
+        $response = $this->get(route('posts.index'));
         $response->assertSeeText('No blog posts yet!');
         $response->assertStatus(200);
     }
@@ -31,7 +31,7 @@ class PostTest extends TestCase
         $post = $this->createDummyPost();
 
         // Act
-        $response = $this->get('/posts');
+        $response = $this->get(route('posts.index'));
         // Assert
 
         $this->assertDatabaseHas('blog_posts', [
@@ -51,7 +51,7 @@ class PostTest extends TestCase
 
 
         // Act
-        $response = $this->get('/posts');
+        $response = $this->get(route('posts.index'));
         // Assert
 
         $this->assertDatabaseHas('blog_posts', [
@@ -71,7 +71,7 @@ class PostTest extends TestCase
     public function test_Store_Post_Valid()
     {
         $params = ['title'=>'New post','content'=>'content of this particular post'];
-        $response = $this->actingAs($this->user())->post('/posts',$params);
+        $response = $this->actingAs($this->user())->post(route('posts.store'),$params);
         $response->assertStatus(302);
         $response->assertSessionHas('status');
 
@@ -85,7 +85,7 @@ class PostTest extends TestCase
     public function test_Store_Post_Not_Valid()
     {
         $params = ['title'=>'New','content'=>'post'];
-        $response = $this->actingAs($this->user())->post('/posts',$params);
+        $response = $this->actingAs($this->user())->post(route('posts.store'),$params);
         $response->assertStatus(302);
         $response->assertSessionMissing('status');
 
@@ -112,7 +112,7 @@ class PostTest extends TestCase
         $params = ['title'=>'New Post updated','content'=>'Post content updated'];
 
         //Act section
-        $response = $this->actingAs($user)->patch("/posts/{$post->id}",$params);
+        $response = $this->actingAs($user)->patch(route('posts.update',['post'=>$post->id]),$params);
 
         //Assert section
         $response->assertStatus(302);
@@ -145,7 +145,7 @@ class PostTest extends TestCase
         $params = ['title'=>'New','content'=>'Post'];
 
         //Act section
-        $response = $this->actingAs($user)->patch("/posts/{$post->id}",$params);
+        $response = $this->actingAs($user)->patch(route('posts.update',['post'=>$post->id]),$params);
 
         //Assert section
         $response->assertStatus(302);
@@ -178,7 +178,7 @@ class PostTest extends TestCase
         $post = $this->createDummyPost($user->id);
         $this->assertDatabaseHas('blog_posts',['id'=>$post->id,'title'=>'Test Post','content'=>'Test post content']);
 
-        $response = $this->actingAs($user)->delete("/posts/{$post->id}");
+        $response = $this->actingAs($user)->delete(route('posts.destroy',['post'=>$post->id]));
 
         $response->assertStatus(302);
         $response->assertSessionHas('status');

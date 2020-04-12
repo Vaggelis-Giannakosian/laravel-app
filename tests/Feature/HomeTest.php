@@ -30,7 +30,8 @@ class HomeTest extends TestCase
      */
     public function testContactPageIsWorkingCorrectly()
     {
-        $response = $this->get('/contact');
+
+        $response = $this->get(route('contact'));
         $response->assertSeeText('Contact');
         $response->assertSeeText('This is the contact page');
         $response->assertStatus(200);

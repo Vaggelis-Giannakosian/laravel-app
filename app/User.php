@@ -39,14 +39,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function posts()
+    {
+        return $this->hasMany(BlogPost::class);
+    }
+
 
     public function scopeWithMostBlogPosts(Builder $query)
     {
         return $query->withCount('posts')->orderBy('posts_count','desc');
     }
 
-    public function posts()
+
+    public function scopeWithMostPostsLastMonth(Builder $query)
     {
-        return $this->hasMany(BlogPost::class);
+        return $query->withCount(['posts'=>function(Builder $query){
+            $query->whereBetween(static::CREATED_AT,[now()->subMonths(1),now()]);
+        }])->having('posts_count','>=',2)->groupBy('id')->orderBy('posts_count','desc');
     }
 }
