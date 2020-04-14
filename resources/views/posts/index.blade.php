@@ -8,8 +8,18 @@
         <div class="col-8">
             @forelse($posts as $post)
                 <div class="mb-4">
+
+
                     <h3>
-                        <a href="{{ route('posts.show',['post'=>$post->id]) }}">{{ $post->title }}</a>
+
+                        @if($post->trashed())
+                            <del>
+                                @endif
+                                <a class="{{ $post->trashed() ? 'text-muted' : '' }}"
+                                   href="{{ route('posts.show',['post'=>$post->id]) }}">{{ $post->title }}</a>
+                                @if($post->trashed())
+                            </del>
+                        @endif
                     </h3>
 
                     <p class="text-muted">
@@ -33,13 +43,16 @@
                     {{--            @endcannot--}}
                     {{--                --}}
 
-                    @can('delete', $post)
-                        <form class="fm-inline" action="{{ route('posts.destroy',['post'=>$post->id]) }}" method="POST">
-                            @method('DELETE')
-                            @csrf
-                            <button type="submit" class="btn btn-primary btn-sm">DELETE</button>
-                        </form>
-                    @endcan
+                    @if(!$post->trashed())
+                        @can('delete', $post)
+                            <form class="fm-inline" action="{{ route('posts.destroy',['post'=>$post->id]) }}"
+                                  method="POST">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="btn btn-primary btn-sm">DELETE</button>
+                            </form>
+                        @endcan
+                    @endif
 
                 </div>
             @empty
@@ -63,7 +76,7 @@
                         @forelse($mostCommented as $post)
                             <li class="list-group-item">
                                 <a href="{{ route('posts.show',['post'=>$post->id]) }}">
-                                    {{ $post->title }}
+                                    {{ $post->title }} ({{ $post->comments->count() }})
                                 </a>
                             </li>
                         @empty

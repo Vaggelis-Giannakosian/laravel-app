@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Scopes\DeletedAdminScope;
 use App\Scopes\LatestScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -22,9 +23,16 @@ class BlogPost extends Model
     //HANDLING MODEL EVENTS
     public static function boot()
     {
+        static::addGlobalScope(new DeletedAdminScope());
         parent::boot();
 
-//        static::addGlobalScope(new LatestScope());
+
+//        static::addGlobalScope(new LatestScope());    public static function boot()
+//    {
+//        parent::boot();
+//
+//        static::addGlobalScope(new DeletedAdminScope());
+//    }
 
         //needed so as to perform soft delete on comments (although there already exists a cascade constraint)
         static::deleting(function(BlogPost $blogPost){
