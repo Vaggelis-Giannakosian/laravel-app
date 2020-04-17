@@ -18,6 +18,8 @@
     <x-updated :date="$post->created_at" :name="$post->user->name" />
     <x-updated :date="$post->updated_at" type="Updated "/>
 
+    <p>Currently read by {{ $counter }} people</p>
+
     <h4>Comments</h4>
     @forelse($comments as $comment)
         <p>{{$comment->content}}</p>
