@@ -22,7 +22,7 @@
                 <li class="list-group-item">No Entries found</li>
             @endforelse
         @else
-            {{ $items }}
+            {!! $items !!}
         @endif
     </ul>
 </div>
