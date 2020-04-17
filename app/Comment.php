@@ -23,4 +23,15 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    //HANDLING MODEL EVENTS
+    public static function boot()
+    {
+        parent::boot();
+
+        static::updating(function(Comment $comment){
+            Cache::forget("blog-post-{$comment->blogPost->id}-comments");
+        });
+
+    }
 }

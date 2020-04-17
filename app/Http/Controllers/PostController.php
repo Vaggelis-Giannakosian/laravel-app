@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\BlogPost;
 use App\Http\Requests\StorePost;
 use App\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
 {
@@ -29,14 +27,27 @@ class PostController extends Controller
 //        }
 //        dd(DB::getQueryLog());
 
+//        $posts = Cache::remember('posts',now()->addSecond(10),function(){
+//            return BlogPost::latest()->withCount('comments')->with('user')->get();
+//        });
+
+        $mostCommented = Cache::remember('blog-post-most-commented',600,function(){
+            return BlogPost::mostCommented()->take(5)->get();
+        });
+        $mostActive = Cache::remember('users-most-active',600,function(){
+            return User::withMostBlogPosts()->take(5)->get();
+        });
+        $mostActiveLastMonth = Cache::remember('users-most-active-last-month',600,function(){
+            return User::withMostPostsLastMonth()->take(5)->get();
+        });
 
         return view(
             'posts.index',
             [
                 'posts' => BlogPost::latest()->withCount('comments')->with('user')->get(),
-                'mostCommented'=>BlogPost::mostCommented()->take(5)->get(),
-                'mostActive' => User::withMostBlogPosts()->take(5)->get(),
-                'mostActiveLastMonth' => User::withMostPostsLastMonth()->take(5)->get()
+                'mostCommented'=>$mostCommented,
+                'mostActive' =>$mostActive,
+                'mostActiveLastMonth' => $mostActiveLastMonth
             ]
         );
     }
@@ -60,9 +71,15 @@ class PostController extends Controller
     }
 
 
-    public function show(BlogPost $post)
+    public function show($id)
     {
-        $comments = $post->comments()->get();
+        $post = Cache::remember("blog-post-$id",600,function() use($id){
+            return BlogPost::with('user')->find($id);
+        });
+        $comments = Cache::remember("blog-post-$id-comments",600,function() use($post){
+            return $post->comments()->with('user')->get();
+        });
+
 //        another way
 //        $comments = BlogPost::with(['comments'=>function($query){
 //            return $query->latest();
