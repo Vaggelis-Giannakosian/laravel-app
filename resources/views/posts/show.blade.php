@@ -10,10 +10,7 @@
     <p>Added {{$post->created_at->diffForHumans() }}</p>
 
     @if ( (new Carbon\Carbon())->diffInMinutes($post->created_at) < 5 )
-         @component('badge', ['type' => 'primary'])
-
-            Brand New!
-         @endcomponent
+        <x-badge type="primary" message="New Post!"/>
     @endif
 
     <h4>Comments</h4>
