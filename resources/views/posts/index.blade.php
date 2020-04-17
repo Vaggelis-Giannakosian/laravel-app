@@ -22,7 +22,7 @@
                         @endif
                     </h3>
 
-                <x-updated :date="$post->created_at" :name="$post->user->name" />
+                    <x-updated :date="$post->created_at" :name="$post->user->name"/>
 
                     @if($post->comments_count)
                         <p>{{ $post->comments_count }} comments</p>
@@ -61,66 +61,31 @@
 
             <div class="container"></div>
 
-
             <div class="row">
-
-                <div class="card mb-4" style="width: 100%">
-                    <div class="card-body">
-                        <h5 class="card-title">Most Commented</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">What people are currently talking about.</h6>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        @forelse($mostCommented as $post)
-                            <li class="list-group-item">
-                                <a href="{{ route('posts.show',['post'=>$post->id]) }}">
-                                    {{ $post->title }} ({{ $post->comments->count() }})
-                                </a>
-                            </li>
-                        @empty
-                            <li class="list-group-item">No Posts with comments yet!</li>
-                        @endforelse
-                    </ul>
-                </div>
-
+                <?php $mostCommentedArray = $mostCommented->map(function ($el) {
+                    return ['title' => $el->title, 'href' => route('posts.show', ['post' => $el->id]), 'count' => $el->comments_count];
+                });?>
+                <x-card title="Most Commented"
+                        subtitle="What people are currently talking about"
+                        :items="$mostCommentedArray"/>
             </div>
 
             <div class="row">
-
-                <div class="card mt-4" style="width: 100%">
-                    <div class="card-body">
-                        <h5 class="card-title">Most Active Users</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Users with most posts written</h6>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        @forelse($mostActive as $user)
-                            <li class="list-group-item">
-                                {{ $user->name }} ({{ $user->posts_count }})
-                            </li>
-                        @empty
-                            <li class="list-group-item">No Users found</li>
-                        @endforelse
-                    </ul>
-                </div>
-
+                <?php $mostActiveArray = $mostActive->map(function ($el) {
+                    return ['title' => $el->name, 'href' => '', 'count' => $el->posts_count];
+                });?>
+                <x-card title="Most Active Users"
+                        subtitle="Writers with most posts written"
+                        :items="$mostActiveArray"/>
             </div>
+
             <div class="row">
-
-                <div class="card mt-4" style="width: 100%">
-                    <div class="card-body">
-                        <h5 class="card-title">Most Active Users Last Month</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Users with most posts written in the last month</h6>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        @forelse($mostActiveLastMonth as $user)
-                            <li class="list-group-item">
-                                {{ $user->name }} ({{ $user->posts_count }})
-                            </li>
-                        @empty
-                            <li class="list-group-item">No Users found</li>
-                        @endforelse
-                    </ul>
-                </div>
-
+                <?php $mostActiveLastMonthArray = $mostActiveLastMonth->map(function ($el) {
+                    return ['title' => $el->name, 'href' => '', 'count' => $el->posts_count];
+                });?>
+                <x-card title="Most Active Users Last Month"
+                        subtitle="Writers with most posts written in the last month"
+                        :items="$mostActiveLastMonthArray"/>
             </div>
 
 

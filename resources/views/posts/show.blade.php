@@ -16,6 +16,7 @@
     <p>{{ $post->content }}</p>
 
     <x-updated :date="$post->created_at" :name="$post->user->name" />
+    <x-updated :date="$post->updated_at" type="Updated "/>
 
     <h4>Comments</h4>
     @forelse($comments as $comment)
