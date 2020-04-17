@@ -31,9 +31,12 @@
                     @endif
 
 
-                    @can('update', $post)
-                        <a class="btn btn-primary btn-sm" href="{{ route('posts.edit',['post'=>$post->id]) }}">Edit</a>
-                    @endcan
+                    @auth
+                        @can('update', $post)
+                            <a class="btn btn-primary btn-sm"
+                               href="{{ route('posts.edit',['post'=>$post->id]) }}">Edit</a>
+                        @endcan
+                    @endauth
 
                     {{--            @cannot('delete',$post)--}}
                     {{--                <p>You cant delete this post.</p>--}}
@@ -41,14 +44,16 @@
                     {{--                --}}
 
                     @if(!$post->trashed())
-                        @can('delete', $post)
-                            <form class="fm-inline" action="{{ route('posts.destroy',['post'=>$post->id]) }}"
-                                  method="POST">
-                                @method('DELETE')
-                                @csrf
-                                <button type="submit" class="btn btn-primary btn-sm">DELETE</button>
-                            </form>
-                        @endcan
+                        @auth
+                            @can('delete', $post)
+                                <form class="fm-inline" action="{{ route('posts.destroy',['post'=>$post->id]) }}"
+                                      method="POST">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary btn-sm">DELETE</button>
+                                </form>
+                            @endcan
+                        @endauth
                     @endif
 
                 </div>
