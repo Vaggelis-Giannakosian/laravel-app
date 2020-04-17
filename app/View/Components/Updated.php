@@ -2,25 +2,26 @@
 
 namespace App\View\Components;
 
+use Carbon\Carbon;
 use Illuminate\View\Component;
-use Illuminate\View\View;
 
-class Badge extends Component
+class Updated extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public $type;
-    public $message;
-    public $show;
 
-    public function __construct(string $type, string $message, bool $show)
+    public $type;
+    public $date;
+    public $name;
+
+    public function __construct(Carbon $date, string $name='', string $type='Added ')
     {
         $this->type = $type;
-        $this->message = $message;
-        $this->show = $show;
+        $this->date = $date;
+        $this->name = $name;
     }
 
     /**
@@ -28,8 +29,8 @@ class Badge extends Component
      *
      * @return \Illuminate\View\View|string
      */
-    public function render() : View
+    public function render()
     {
-        return view('components.badge');
+        return view('components.updated');
     }
 }

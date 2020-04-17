@@ -12,6 +12,7 @@ class CommentsTableSeeder extends Seeder
     public function run()
     {
         $posts = App\BlogPost::all();
+        $users = App\User::all();
         if($posts->count() === 0)
         {
             $this->command->info('There are no blog posts, so no comments will be added');
@@ -20,8 +21,11 @@ class CommentsTableSeeder extends Seeder
 
 
         $commentsCount = (int) $this->command->ask('How many comments would you like?',150);
-        factory(App\Comment::class,$commentsCount)->make()->each(function($comment) use ($posts){
-            $comment->blogPost()->associate($posts->random()->id)->save();
+        factory(App\Comment::class,$commentsCount)->make()->each(function($comment) use ($posts,$users){
+
+            $comment->blogPost()->associate($posts->random()->id);
+            $comment->user()->associate($users->random()->id);
+            $comment->save();
         });
     }
 }

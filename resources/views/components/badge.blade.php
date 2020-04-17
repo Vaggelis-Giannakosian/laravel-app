@@ -1,3 +1,5 @@
-<div class="badge badge-{{ $type??'success' }}">
-   {{ $message }}
-</div>
+@if( $show )
+    <span class="badge badge-{{ $type??'success' }}">
+        {{ $message }}
+    </span>
+@endif
