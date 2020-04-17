@@ -9,9 +9,10 @@
 
     <p>Added {{$post->created_at->diffForHumans() }}</p>
 
-    @if ( (new Carbon\Carbon())->diffInMinutes($post->created_at) <5 )
-         @component('badge')
-            New!
+    @if ( (new Carbon\Carbon())->diffInMinutes($post->created_at) < 5 )
+         @component('badge', ['type' => 'primary'])
+
+            Brand New!
          @endcomponent
     @endif
 
