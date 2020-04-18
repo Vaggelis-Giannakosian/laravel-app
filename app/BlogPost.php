@@ -44,6 +44,10 @@ class BlogPost extends Model
         return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 
+    public function scopeLastestWithRelations(Builder $query)
+    {
+        return $query->latest()->with(['user','tags','comments']);
+    }
 
 
     //HANDLING MODEL EVENTS

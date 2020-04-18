@@ -20,7 +20,7 @@ class PostController extends Controller
     {
 
         $posts = Cache::tags(['blog-post'])->remember('blog-index',600,function(){
-            return BlogPost::latest()->with(['user','tags','comments'])->get();
+            return BlogPost::lastestWithRelations()->get();
         });
 
         return view(
