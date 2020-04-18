@@ -35,16 +35,18 @@ class BlogPost extends Model
 //    }
 
         //needed so as to perform soft delete on comments (although there already exists a cascade constraint)
-        static::deleting(function(BlogPost $blogPost){
-            $blogPost->comments()->delete();
+        static::deleting(function(BlogPost $post){
+            $post->comments()->delete();
+            Cache::tags(['blog-post'])->forget("blog-post-{$post->id}");
         });
 
         static::updating(function(BlogPost $post){
-            Cache::forget("blog-post-{$post->id}");
+            Cache::tags(['blog-post'])->forget("blog-post-{$post->id}");
         });
 
         static::restored(function(BlogPost $blogPost){
             $blogPost->comments()->restore();
+            Cache::tags(['blog-post'])->flush();
         });
     }
 

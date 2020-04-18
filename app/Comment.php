@@ -12,7 +12,7 @@ class Comment extends Model
     use SoftDeletes;
 
 
-    protected $fillable = ['content'];
+    protected $fillable = ['content','user_id'];
     // blog_post_id
     //blogPost
     public function blogPost()
@@ -30,7 +30,14 @@ class Comment extends Model
     {
         parent::boot();
 
+        static::deleting(function(Comment $comment){
+            Cache::tags(['blog-post'])->forget("blog-post-{$comment->blogPost->id}-comments");
+        });
         static::updating(function(Comment $comment){
+            Cache::tags(['blog-post'])->forget("blog-post-{$comment->blogPost->id}-comments");
+        });
+
+        static::creating(function(Comment $comment){
             Cache::tags(['blog-post'])->forget("blog-post-{$comment->blogPost->id}-comments");
         });
 
