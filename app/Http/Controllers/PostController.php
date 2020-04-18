@@ -65,7 +65,7 @@ class PostController extends Controller
         $counterKey = "blog-post-($id)-counter";
         $usersKey = "blog-post-{$id}-users";
 
-        $users = Cache::get($usersKey,[]);
+        $users = Cache::tags(['blog-post'])->get($usersKey,[]);
         $usersUpdate = [];
         $difference = 0;
         $now = now();
@@ -83,15 +83,15 @@ class PostController extends Controller
             $difference++;
 
         $usersUpdate[$sessionId] = $now;
-        Cache::forever($usersKey,$usersUpdate);
-        if(!Cache::has($counterKey))
+        Cache::tags(['blog-post'])->forever($usersKey,$usersUpdate);
+        if(!Cache::tags(['blog-post'])->has($counterKey))
         {
-            Cache::forever($counterKey,1);
+            Cache::tags(['blog-post'])->forever($counterKey,1);
         }else{
-            Cache::increment($counterKey,$difference);
+            Cache::tags(['blog-post'])->increment($counterKey,$difference);
         }
 
-        $counter = Cache::get($counterKey);
+        $counter = Cache::tags(['blog-post'])->get($counterKey);
 //        another way
 //        $comments = BlogPost::with(['comments'=>function($query){
 //            return $query->latest();

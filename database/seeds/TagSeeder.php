@@ -1,7 +1,8 @@
 <?php
 
+use App\Tag;
 use Illuminate\Database\Seeder;
-use \Faker\Factory as Faker;
+
 class TagSeeder extends Seeder
 {
     /**
@@ -11,20 +12,10 @@ class TagSeeder extends Seeder
      */
     public function run()
     {
-
-
-        $posts = App\BlogPost::all();
-        if($posts->count() === 0)
-        {
-            $this->command->info('There are no blog posts, so no tags will be added');
-            return;
-        }
-
-        $faker = Faker::create();
-        $tagsCount = (int) $this->command->ask('How many tags would you like?',30);
-        factory(App\Tag::class,$tagsCount)->make()->each(function($tag) use ($posts,$faker){
-            $tag->save();
-            $tag->posts()->syncWithoutDetaching($posts->random($faker->randomNumber(1)));
-        });
+        collect(['Science', 'Sport', 'Politics', 'Entertainment', 'Economy'])
+            ->each(
+                function ($tag) {
+                    $tag = Tag::create(['name' => $tag]);
+                });
     }
 }
