@@ -20,36 +20,6 @@ class BlogPost extends Model
         'updated_at'
     ];
 
-    //HANDLING MODEL EVENTS
-    public static function boot()
-    {
-        static::addGlobalScope(new DeletedAdminScope());
-        parent::boot();
-
-
-//        static::addGlobalScope(new LatestScope());    public static function boot()
-//    {
-//        parent::boot();
-//
-//        static::addGlobalScope(new DeletedAdminScope());
-//    }
-
-        //needed so as to perform soft delete on comments (although there already exists a cascade constraint)
-        static::deleting(function(BlogPost $post){
-            $post->comments()->delete();
-            Cache::tags(['blog-post'])->forget("blog-post-{$post->id}");
-        });
-
-        static::updating(function(BlogPost $post){
-            Cache::tags(['blog-post'])->forget("blog-post-{$post->id}");
-        });
-
-        static::restored(function(BlogPost $blogPost){
-            $blogPost->comments()->restore();
-            Cache::tags(['blog-post'])->flush();
-        });
-    }
-
     public function scopeOwn(Builder $query){
         return $query->where('user_id',auth()->user()->id);
     }
@@ -73,5 +43,43 @@ class BlogPost extends Model
     {
         return $this->belongsToMany(Tag::class)->withTimestamps();
     }
+
+
+
+    //HANDLING MODEL EVENTS
+    public static function boot()
+    {
+        static::addGlobalScope(new DeletedAdminScope());
+        parent::boot();
+
+
+        //needed so as to perform soft delete on comments (although there already exists a cascade constraint)
+        static::deleting(function(BlogPost $post){
+            $post->comments()->delete();
+            Cache::tags(['blog-post'])->forget("blog-post-{$post->id}");
+            Cache::tags(['blog-post'])->forget("blog-index");
+            Cache::tags(['blog-post'])->forget("blog-post-most-commented");
+            Cache::tags(['blog-post'])->forget("users-most-active");
+            Cache::tags(['blog-post'])->forget("users-most-active-last-month");
+        });
+
+        static::updating(function(BlogPost $post){
+            Cache::tags(['blog-post'])->forget("blog-post-{$post->id}");
+            Cache::tags(['blog-post'])->forget("blog-index");
+            Cache::tags(['blog-post'])->forget("blog-post-most-commented");
+        });
+
+        static::restored(function(BlogPost $post){
+            $post->comments()->restore();
+            Cache::tags(['blog-post'])->forget("blog-post-{$post->id}");
+            Cache::tags(['blog-post'])->forget("blog-index");
+            Cache::tags(['blog-post'])->forget("blog-post-most-commented");
+            Cache::tags(['blog-post'])->forget("users-most-active");
+            Cache::tags(['blog-post'])->forget("users-most-active-last-month");
+
+        });
+    }
+
+
 
 }
