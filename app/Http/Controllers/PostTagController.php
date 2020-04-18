@@ -17,7 +17,7 @@ class PostTagController extends Controller
             "blog-tags-index-{$tag}",
             600,
             function () use ($tag) {
-                return Tag::with(['posts', 'posts.user', 'posts.comments', 'posts.tags'])->findOrFail($tag);
+                return Tag::latest()->with(['posts', 'posts.user', 'posts.comments', 'posts.tags'])->findOrFail($tag);
             }
         );
 

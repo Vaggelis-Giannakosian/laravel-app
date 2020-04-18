@@ -26,8 +26,8 @@
 
                     <x-tags :tags="$post->tags"/>
 
-                    @if($post->comments_count)
-                        <p>{{ $post->comments_count }} comments</p>
+                    @if($count = $post->comments->count())
+                        <p>{{ $count }} comments</p>
                     @else
                         <p>No comments yet!</p>
                     @endif
