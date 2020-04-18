@@ -18,36 +18,15 @@ class PostController extends Controller
 
     public function index()
     {
-//        DB::connection()->enableQueryLog();
-//        $posts = BlogPost::with('comments')->get();
-//        foreach ($posts as $post) {
-//            foreach ($post->comments as $comment) {
-//                echo $comment->content;
-//            }
-//        }
-//        dd(DB::getQueryLog());
 
-//        $posts = Cache::remember('posts',now()->addSecond(10),function(){
-//            return BlogPost::latest()->withCount('comments')->with('user')->get();
-//        });
-
-        $mostCommented = Cache::tags(['blog-post'])->remember('blog-post-most-commented',600,function(){
-            return BlogPost::mostCommented()->take(5)->get();
-        });
-        $mostActive = Cache::remember('users-most-active',600,function(){
-            return User::withMostBlogPosts()->take(5)->get();
-        });
-        $mostActiveLastMonth = Cache::remember('users-most-active-last-month',600,function(){
-            return User::withMostPostsLastMonth()->take(5)->get();
+        $posts = Cache::tags(['blog-post'])->remember('blog-index',600,function(){
+            return BlogPost::latest()->withCount('comments')->with(['user','tags'])->get();
         });
 
         return view(
             'posts.index',
             [
-                'posts' => BlogPost::latest()->withCount('comments')->with(['user','tags'])->get(),
-                'mostCommented'=>$mostCommented,
-                'mostActive' =>$mostActive,
-                'mostActiveLastMonth' => $mostActiveLastMonth
+                'posts' => $posts
             ]
         );
     }

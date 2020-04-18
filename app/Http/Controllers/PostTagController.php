@@ -13,13 +13,12 @@ class PostTagController extends Controller
     public function index($tag)
     {
 
-        $tag = Tag::with('posts')->findOrFail($tag);
+        $tag = Cache::tags(['blog-post'])->remember('blog-tags-index',600,function() use ($tag){
+            return  Tag::with(['posts','posts.user','posts.comments','posts.tags'])->findOrFail($tag);
+        });
 
         return view('posts.index',[
-            'posts'=> $tag->posts,
-            'mostCommented' => [],
-            'mostActive' => [],
-            'mostActiveLastMonth' => []
+            'posts'=> $tag->posts
         ]);
 //        $posts = Cache::tags(['tags-archive'])->remember('tags-archive',600,function() use($tagId){
 //            return BlogPost::with('tags',function($query) use ($tagId){

@@ -68,7 +68,6 @@
 
             <div class="container"></div>
 
-            @if(!empty($mostCommented))
                 <div class="row">
                     <?php $mostCommentedArray = $mostCommented->map(function ($el) {
                         return ['title' => $el->title, 'href' => route('posts.show', ['post' => $el->id]), 'count' => $el->comments_count];
@@ -77,10 +76,8 @@
                             subtitle="What people are currently talking about"
                             :items="$mostCommentedArray"/>
                 </div>
-            @endif
 
 
-            @if(!empty($mostActive))
                 <div class="row">
                     <?php $mostActiveArray = $mostActive->map(function ($el) {
                         return ['title' => $el->name, 'href' => '', 'count' => $el->posts_count];
@@ -89,9 +86,7 @@
                             subtitle="Writers with most posts written"
                             :items="$mostActiveArray"/>
                 </div>
-            @endif
 
-            @if(!empty($mostActiveLastMonth))
                 <div class="row">
                     <?php $mostActiveLastMonthArray = $mostActiveLastMonth->map(function ($el) {
                         return ['title' => $el->name, 'href' => '', 'count' => $el->posts_count];
@@ -100,7 +95,6 @@
                             subtitle="Writers with most posts written in the last month"
                             :items="$mostActiveLastMonthArray"/>
                 </div>
-            @endif
 
         </div>
 
