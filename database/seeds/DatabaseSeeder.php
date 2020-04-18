@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use Illuminate\Support\Facades\Cache;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,5 +26,7 @@ class DatabaseSeeder extends Seeder
             BlogPostsTableSeeder::class,
             CommentsTableSeeder::class
         ]);
+
+//        Cache::tags(['blog-post'])->flush();
     }
 }

@@ -31,7 +31,7 @@ class PostController extends Controller
 //            return BlogPost::latest()->withCount('comments')->with('user')->get();
 //        });
 
-        $mostCommented = Cache::remember('blog-post-most-commented',600,function(){
+        $mostCommented = Cache::tags(['blog-post'])->remember('blog-post-most-commented',600,function(){
             return BlogPost::mostCommented()->take(5)->get();
         });
         $mostActive = Cache::remember('users-most-active',600,function(){
@@ -65,6 +65,7 @@ class PostController extends Controller
 //        ($post = new BlogPost($validatedData))->save();
 
         $post = BlogPost::create($validatedData);
+        Cache::tags(['blog-post'])->flush();
         request()->session()->flash('status','Blog post was created!');
         return redirect()->route('posts.show',['post'=>$post->id]);
 
@@ -73,10 +74,10 @@ class PostController extends Controller
 
     public function show($id)
     {
-        $post = Cache::remember("blog-post-$id",600,function() use($id){
+        $post = Cache::tags(['blog-post'])->remember("blog-post-$id",600,function() use($id){
             return BlogPost::with('user')->find($id);
         });
-        $comments = Cache::remember("blog-post-$id-comments",600,function() use($post){
+        $comments = Cache::tags(['blog-post'])->remember("blog-post-$id-comments",600,function() use($post){
             return $post->comments()->with('user')->get();
         });
 
@@ -142,6 +143,7 @@ class PostController extends Controller
         $validatedData = $request->validated();
 //        $post->update($validatedData);
         $post->fill($validatedData)->save();
+        Cache::tags(['blog-post'])->flush();
         request()->session()->flash('status','Blog post was updated!');
         return redirect()->route('posts.show',['post'=>$post->id]);
     }
