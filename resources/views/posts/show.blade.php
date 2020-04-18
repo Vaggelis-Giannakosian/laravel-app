@@ -28,6 +28,9 @@
             <p>Currently read by {{ $counter }} people</p>
 
             <h4>Comments</h4>
+
+            @include('comments._form')
+
             @forelse($comments as $comment)
                 <p>{{$comment->content}}</p>
                 <p class="text-muted">

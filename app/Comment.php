@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class Comment extends Model
 {
@@ -30,7 +31,7 @@ class Comment extends Model
         parent::boot();
 
         static::updating(function(Comment $comment){
-            Cache::forget("blog-post-{$comment->blogPost->id}-comments");
+            Cache::tags(['blog-post'])->forget("blog-post-{$comment->blogPost->id}-comments");
         });
 
     }

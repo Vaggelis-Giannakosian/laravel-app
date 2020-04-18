@@ -3,11 +3,7 @@
     <input class="form-control" placeholder="Enter the title..." type="text" name="title" id="title" value="{{ old('title', $post->title?? null) }}">
 </div>
 
-
-@error('title')
-<div class="alert alert-danger">{{ $message }}</div>
-@enderror
-
+<x-errors name="title"/>
 
 <div class="form-group">
     <label for="content">Content</label>
@@ -15,6 +11,4 @@
 </div>
 
 
-@error('content')
-<div class="alert alert-danger">{{ $message }}</div>
-@enderror
+<x-errors name="content"/>
