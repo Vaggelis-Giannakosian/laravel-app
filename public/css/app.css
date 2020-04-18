@@ -10891,3 +10891,7 @@ a.text-dark:focus {
   display: inline;
 }
 
+.badge-lg {
+  font-size: 0.8rem;
+}
+
