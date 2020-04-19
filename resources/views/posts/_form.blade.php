@@ -14,7 +14,7 @@
 
 <div class="form-group">
     <label for="thumbnail">Thumbnail</label>
-    <input type="file" name="thumbnail" id="thumbnail" class="form-control-file">
+    <input type="file" name="thumbnail" id="thumbnail" accept="image/*" class="form-control-file">
 </div>
 
 <x-errors name="thumbnail"/>
