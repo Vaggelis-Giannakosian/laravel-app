@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Storage;
 
 class Image extends Model
 {
-    protected $fillable = ['path','post_id'];
+    protected $fillable = ['path'];
 
-    public function post()
+    public function imageable()
     {
-        return $this->belongsTo(BlogPost::class,'blog_post_id');
+        return $this->morphTo();
     }
 
     public function url()

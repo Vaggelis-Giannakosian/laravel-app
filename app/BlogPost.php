@@ -46,7 +46,7 @@ class BlogPost extends Model
 
     public function thumb()
     {
-        return $this->hasOne(Image::class);
+        return $this->morphOne(Image::class,'imageable');
     }
 
     public function scopeLastestWithRelations(Builder $query)

@@ -109,7 +109,7 @@ class PostController extends Controller
             $filename = $post->id.'_'.str_replace($file->getClientOriginalExtension(),$file->guessExtension(),$file->getClientOriginalName());
             $path = $file->storeAs('thumbnails',$filename);
             $post->thumb()->save(
-                Image::create(['path'=>$path])
+                Image::make(['path'=>$path])
             );
         }
 
@@ -147,10 +147,9 @@ class PostController extends Controller
                 $post->thumb->save();
             }else{
                 $post->thumb()->save(
-                    Image::create(['path'=>$path])
+                    Image::make(['path'=>$path])
                 );
             }
-
         }
 
         request()->session()->flash('status','Blog post was updated!');

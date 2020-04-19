@@ -49,6 +49,11 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
+    public function thumb()
+    {
+        return $this->morphOne(Image::class,'imageable');
+    }
+
     public function scopeWithMostBlogPosts(Builder $query)
     {
         return $query->withCount('posts')->orderBy('posts_count','desc');
