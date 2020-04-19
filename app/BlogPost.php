@@ -44,6 +44,11 @@ class BlogPost extends Model
         return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 
+    public function image()
+    {
+        return $this->hasOne(Image::class);
+    }
+
     public function scopeLastestWithRelations(Builder $query)
     {
         return $query->latest()->with(['user','tags','comments']);

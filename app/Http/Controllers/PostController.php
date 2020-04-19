@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\BlogPost;
 use App\Http\Requests\StorePost;
+use App\Image;
 use App\User;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -43,6 +45,15 @@ class PostController extends Controller
         $validatedData['user_id'] = $request->user()->id;
         $post = BlogPost::create($validatedData);
 
+        if( $request->hasFile('thumbnail') )
+        {
+            $file = $request->file('thumbnail');
+            $filename = $post->id.'_'.str_replace($file->getClientOriginalExtension(),$file->guessExtension(),$file->getClientOriginalName());
+            $path = $file->storeAs('thumbnails',$filename);
+            $post->image()->save(
+                Image::create(['path'=>$path])
+            );
+        }
 
         request()->session()->flash('status','Blog post was created!');
         return redirect()->route('posts.show',['post'=>$post->id]);
