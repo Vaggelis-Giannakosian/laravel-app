@@ -1,11 +1,11 @@
 <div class="row">
 
     <div class="col-4">
-        <img src="" alt="" class="img-thumbnail img-fluid avatar">
+        <img src="{{ $user->thumb ? $user->thumb->url() : '' }}" alt="" class="img-thumbnail img-fluid avatar">
 
         <div class="card mt-4">
             <div class="card-body">
-                <label for="avatar"><h6>Upload a different pic</h6></label>
+                <h6><label for="avatar">Upload a different pic</label></h6>
                 <input type="file" name="avatar" id="avatar" accept="image/*" class="form-control-file">
             </div>
 
