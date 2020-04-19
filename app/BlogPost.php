@@ -61,16 +61,17 @@ class BlogPost extends Model
         static::deleting(function(BlogPost $post){
             $post->comments()->delete();
             Cache::tags(['blog-post'])->forget("blog-post-{$post->id}");
-            Cache::tags(['blog-post'])->forget("blog-index");
-            Cache::tags(['blog-post'])->forget("blog-post-most-commented");
-            Cache::tags(['blog-post'])->forget("users-most-active");
-            Cache::tags(['blog-post'])->forget("users-most-active-last-month");
+            Cache::tags(['blog-post','blog-common'])->flush();
         });
 
         static::updating(function(BlogPost $post){
             Cache::tags(['blog-post'])->forget("blog-post-{$post->id}");
-            Cache::tags(['blog-post'])->forget("blog-index");
-            Cache::tags(['blog-post'])->forget("blog-post-most-commented");
+            Cache::tags(['blog-post','blog-common'])->forget("blog-index");
+            Cache::tags(['blog-post','blog-common'])->forget("blog-post-most-commented");
+        });
+
+        static::creating(function(BlogPost $post){
+            Cache::tags(['blog-common'])->flush();
         });
 
         static::restored(function(BlogPost $post){

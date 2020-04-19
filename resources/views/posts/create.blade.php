@@ -3,27 +3,12 @@
 
 @section('content')
 
-    <form action="{{ route('posts.store') }}" method="POST">
-
+    <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
        @include('posts._form')
 
-
-{{--        @if($errors->any())--}}
-{{--            <div>--}}
-{{--                <ul>--}}
-{{--                    @foreach($errors->all() as $error)--}}
-{{--                        <li>--}}
-{{--                            {{ $error }}--}}
-{{--                        </li>--}}
-{{--                    @endforeach--}}
-{{--                </ul>--}}
-{{--            </div>--}}
-{{--        @endif--}}
-
         <button class="btn btn-primary" type="submit">Create</button>
-
     </form>
 
 @endsection

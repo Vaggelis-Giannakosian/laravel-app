@@ -32,7 +32,7 @@ class Comment extends Model
 
         static::deleting(function(Comment $comment){
             Cache::tags(['blog-post'])->forget("blog-post-{$comment->blogPost->id}-comments");
-            Cache::tags(['blog-post'])->forget("blog-post-most-commented");
+            Cache::tags(['blog-post','blog-common'])->forget("blog-post-most-commented");
         });
 
         static::updating(function(Comment $comment){
@@ -41,7 +41,7 @@ class Comment extends Model
 
         static::creating(function(Comment $comment){
             Cache::tags(['blog-post'])->forget("blog-post-{$comment->blogPost->id}-comments");
-            Cache::tags(['blog-post'])->forget("blog-post-most-commented");
+            Cache::tags(['blog-post','blog-common'])->forget("blog-post-most-commented");
         });
 
     }

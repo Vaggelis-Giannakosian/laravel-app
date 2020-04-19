@@ -19,7 +19,7 @@ class PostController extends Controller
     public function index()
     {
 
-        $posts = Cache::tags(['blog-post'])->remember('blog-index',600,function(){
+        $posts = Cache::tags(['blog-post','blog-common'])->remember('blog-index',600,function(){
             return BlogPost::lastestWithRelations()->get();
         });
 
@@ -41,10 +41,9 @@ class PostController extends Controller
     {
         $validatedData = $request->validated();
         $validatedData['user_id'] = $request->user()->id;
-//        ($post = new BlogPost($validatedData))->save();
-
         $post = BlogPost::create($validatedData);
-        Cache::tags(['blog-post'])->flush();
+
+
         request()->session()->flash('status','Blog post was created!');
         return redirect()->route('posts.show',['post'=>$post->id]);
 
@@ -119,15 +118,9 @@ class PostController extends Controller
     public function update(StorePost $request, BlogPost $post )
     {
         $this->authorize($post);
-//        if(Gate::denies('update-post',$post))
-//        {
-//            abort(403, "You can't edit this post");
-//        }
-
         $validatedData = $request->validated();
-//        $post->update($validatedData);
         $post->fill($validatedData)->save();
-        Cache::tags(['blog-post'])->flush();
+
         request()->session()->flash('status','Blog post was updated!');
         return redirect()->route('posts.show',['post'=>$post->id]);
     }
@@ -141,6 +134,9 @@ class PostController extends Controller
 //       $result = BlogPost::destroy($post->id);
 
         $flashMessage =  $result ? 'Blog post was deleted!' : 'There was an error. Please try again';
+        Cache::tags(['blog-common'])->flush();
+        Cache::tags(['blog-post'])->forget("blog-post-{$post->id}");
+        Cache::tags(['blog-post'])->forget("blog-post-{$post->id}-comments");
         request()->session()->flash('status',$flashMessage);
        return redirect()->route('posts.index');
     }

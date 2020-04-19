@@ -13,13 +13,13 @@ class ActivityComposer
 {
     public function compose(View $view)
     {
-        $mostCommented = Cache::tags(['blog-post'])->remember('blog-post-most-commented', 600, function () {
+        $mostCommented = Cache::tags(['blog-post','blog-common'])->remember('blog-post-most-commented', 600, function () {
             return BlogPost::mostCommented()->take(5)->get();
         });
-        $mostActive = Cache::tags(['blog-post'])->remember('users-most-active', 600, function () {
+        $mostActive = Cache::tags(['blog-post','blog-common'])->remember('users-most-active', 600, function () {
             return User::withMostBlogPosts()->take(5)->get();
         });
-        $mostActiveLastMonth = Cache::tags(['blog-post'])->remember('users-most-active-last-month', 600, function () {
+        $mostActiveLastMonth = Cache::tags(['blog-post','blog-common'])->remember('users-most-active-last-month', 600, function () {
             return User::withMostPostsLastMonth()->take(5)->get();
         });
 

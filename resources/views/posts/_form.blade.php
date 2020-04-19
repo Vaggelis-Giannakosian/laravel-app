@@ -10,5 +10,11 @@
     <textarea class="form-control" name="content" id="content" cols="30" rows="10" placeholder="Write the content here...">{{ old('content', $post->content??null) }}</textarea>
 </div>
 
-
 <x-errors name="content"/>
+
+<div class="form-group">
+    <label for="thumbnail">Thumbnail</label>
+    <input type="file" name="thumbnail" id="thumbnail" class="form-control-file">
+</div>
+
+<x-errors name="thumbnail"/>

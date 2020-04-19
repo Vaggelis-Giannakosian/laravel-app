@@ -13,7 +13,7 @@ class PostTagController extends Controller
     public function index($tag)
     {
 
-        $tag = Cache::tags(['blog-post'])->remember(
+        $tag = Cache::tags(['blog-post','blog'])->remember(
             "blog-tags-index-{$tag}",
             600,
             function () use ($tag) {
