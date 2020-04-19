@@ -8,7 +8,16 @@
 
         <div class="col-8">
 
-            <h1>{{ $post->title }}</h1>
+            @if($post->thumb)
+                <div style="background:url('{{ $post->thumb->url() }}'); min-height: 500px; color:white; text-align: center; background-attachment: fixed;">
+                    <h1 style="padding-top:100px; text-shadow: 1px 2px #000;">
+                        {{ $post->title }}
+                    </h1>
+                </div>
+            @else
+                <h1>{{ $post->title }}</h1>
+            @endif
+
 
             <x-badge
                 type="primary"
@@ -19,9 +28,8 @@
 
             <p>{{ $post->content }}</p>
 
-            @if($post->thumb)
-                <img src="{{ $post->thumb->url() }}" alt="">
-            @endif
+
+
 
 
             <x-updated :date="$post->created_at" :name="$post->user->name" />
