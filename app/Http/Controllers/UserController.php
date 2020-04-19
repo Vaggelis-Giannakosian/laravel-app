@@ -49,22 +49,20 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
      */
     public function show(User $user)
     {
-        dd($user);
+        return view('users.show',['user'=>$user]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
     {
-        dd($user);
+        return view('users.edit',['user'=>$user]);
     }
 
     /**

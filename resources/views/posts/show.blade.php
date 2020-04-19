@@ -37,8 +37,8 @@
 
 
 
-            <x-updated :date="$post->created_at" :name="$post->user->name" />
-            <x-updated :date="$post->updated_at" type="Updated "/>
+            <x-updated :date="$post->created_at" :name="$post->user->name" :userId="$post->user->id"/>
+            <x-updated :date="$post->updated_at" type="Updated " :userId="$post->user->id"/>
 
 
             <x-tags :tags="$post->tags"/>
@@ -52,7 +52,7 @@
             @forelse($comments as $comment)
                 <p>{{$comment->content}}</p>
                 <p class="text-muted">
-                    <x-updated :date="$comment->created_at" :name="$comment->user->name" />
+                    <x-updated :date="$comment->created_at" :name="$comment->user->name" :userId="$comment->user->id"/>
             @empty
                 <p>No comments yet!</p>
             @endforelse

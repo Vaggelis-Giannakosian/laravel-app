@@ -2,7 +2,7 @@
 
 
 @section('content')
-    <form action="{{ route('posts.update',['post'=>$post->id]) }}" method="POST" enctype="multipart/form-data">
+    <form class="form-horizontal" action="{{ route('posts.update',['post'=>$post->id]) }}" method="POST" enctype="multipart/form-data">
         @method('PUT')
         @csrf
 
