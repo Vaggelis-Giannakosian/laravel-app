@@ -44,7 +44,7 @@ class BlogPost extends Model
         return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 
-    public function image()
+    public function thumb()
     {
         return $this->hasOne(Image::class);
     }

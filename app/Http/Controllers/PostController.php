@@ -50,7 +50,7 @@ class PostController extends Controller
             $file = $request->file('thumbnail');
             $filename = $post->id.'_'.str_replace($file->getClientOriginalExtension(),$file->guessExtension(),$file->getClientOriginalName());
             $path = $file->storeAs('thumbnails',$filename);
-            $post->image()->save(
+            $post->thumb()->save(
                 Image::create(['path'=>$path])
             );
         }
@@ -64,7 +64,7 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Cache::tags(['blog-post'])->remember("blog-post-$id",600,function() use($id){
-            return BlogPost::with(['user','tags','comments','comments.user'])->find($id);
+            return BlogPost::with(['user','tags','comments','comments.user','thumb'])->find($id);
         });
 
         $comments = Cache::tags(['blog-post'])->remember("blog-post-$id-comments",600,function() use($post){

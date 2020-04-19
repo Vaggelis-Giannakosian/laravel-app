@@ -19,6 +19,11 @@
 
             <p>{{ $post->content }}</p>
 
+            @if($post->thumb)
+                <img src="{{ $post->thumb->url() }}" alt="">
+            @endif
+
+
             <x-updated :date="$post->created_at" :name="$post->user->name" />
             <x-updated :date="$post->updated_at" type="Updated "/>
 
