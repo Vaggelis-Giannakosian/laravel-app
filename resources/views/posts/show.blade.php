@@ -9,7 +9,12 @@
         <div class="col-8">
 
             @if($post->thumb)
-                <div style="background:url('{{ $post->thumb->url() }}'); min-height: 500px; color:white; text-align: center; background-attachment: fixed;">
+                <div style="background:url('{{ $post->thumb->url() }}');
+                    min-height: 500px;
+                    color:white;
+                    text-align: center;
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;">
                     <h1 style="padding-top:100px; text-shadow: 1px 2px #000;">
                         {{ $post->title }}
                     </h1>

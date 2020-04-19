@@ -33,33 +33,6 @@ class PostController extends Controller
         );
     }
 
-    public function create()
-    {
-//        $this->authorize('posts.create');
-        return view('posts.create');
-    }
-
-    public function store(StorePost $request)
-    {
-        $validatedData = $request->validated();
-        $validatedData['user_id'] = $request->user()->id;
-        $post = BlogPost::create($validatedData);
-
-        if( $request->hasFile('thumbnail') )
-        {
-            $file = $request->file('thumbnail');
-            $filename = $post->id.'_'.str_replace($file->getClientOriginalExtension(),$file->guessExtension(),$file->getClientOriginalName());
-            $path = $file->storeAs('thumbnails',$filename);
-            $post->thumb()->save(
-                Image::create(['path'=>$path])
-            );
-        }
-
-        request()->session()->flash('status','Blog post was created!');
-        return redirect()->route('posts.show',['post'=>$post->id]);
-
-    }
-
 
     public function show($id)
     {
@@ -118,6 +91,35 @@ class PostController extends Controller
     }
 
 
+    public function create()
+    {
+//        $this->authorize('posts.create');
+        return view('posts.create');
+    }
+
+    public function store(StorePost $request)
+    {
+        $validatedData = $request->validated();
+        $validatedData['user_id'] = $request->user()->id;
+        $post = BlogPost::create($validatedData);
+
+        if( $request->hasFile('thumbnail') )
+        {
+            $file = $request->file('thumbnail');
+            $filename = $post->id.'_'.str_replace($file->getClientOriginalExtension(),$file->guessExtension(),$file->getClientOriginalName());
+            $path = $file->storeAs('thumbnails',$filename);
+            $post->thumb()->save(
+                Image::create(['path'=>$path])
+            );
+        }
+
+        request()->session()->flash('status','Blog post was created!');
+        return redirect()->route('posts.show',['post'=>$post->id]);
+
+    }
+
+
+
     public function edit(BlogPost $post)
     {
 //        dd(auth()->user()->can('update', $post));
@@ -130,7 +132,26 @@ class PostController extends Controller
     {
         $this->authorize($post);
         $validatedData = $request->validated();
-        $post->fill($validatedData)->save();
+        $post->fill($validatedData)->update();
+
+        if( $request->hasFile('thumbnail') )
+        {
+            $file = $request->file('thumbnail');
+            $filename = $post->id.'_'.str_replace($file->getClientOriginalExtension(),$file->guessExtension(),$file->getClientOriginalName());
+            $path = $file->storeAs('thumbnails',$filename);
+
+            if($post->thumb)
+            {
+                Storage::delete($post->thumb->path);
+                $post->thumb->path = $path;
+                $post->thumb->save();
+            }else{
+                $post->thumb()->save(
+                    Image::create(['path'=>$path])
+                );
+            }
+
+        }
 
         request()->session()->flash('status','Blog post was updated!');
         return redirect()->route('posts.show',['post'=>$post->id]);
