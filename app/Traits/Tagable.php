@@ -22,7 +22,7 @@ trait Tagable
 
     private static function findTagsInContent($content)
     {
-        preg_match_all('/@([^@]+)@/m',$content, $tags);
+        preg_match_all('/#([\w|\d]+)\b/m',$content, $tags);
         return Tag::whereIn('name',$tags[1] ?? [])->get();
     }
 

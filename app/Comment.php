@@ -40,8 +40,8 @@ class Comment extends Model
             Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}-comments");
         });
 
-        static::creating(function(Comment $comment){
-            if($comment->commentable_type === BlogPost::class)
+        static::created(function(Comment $comment){
+            if($comment->commentable_type === BlogPost::class || $comment->commentable_type === Comment::class)
             {
                 Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}-comments");
                 Cache::tags(['blog-post','blog-common'])->forget("blog-post-most-commented");

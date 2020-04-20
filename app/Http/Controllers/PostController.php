@@ -41,7 +41,7 @@ class PostController extends Controller
         });
 
         $comments = Cache::tags(['blog-post'])->remember("blog-post-$id-comments",600,function() use($post){
-            return $post->comments()->with('user')->get();
+            return $post->comments()->with(['user','tags'])->get();
         });
 
         $sessionId = session()->getId();
