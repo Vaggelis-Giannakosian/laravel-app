@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Scopes\DeletedAdminScope;
+use App\Traits\Tagable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Cache;
 class BlogPost extends Model
 {
 
-    use SoftDeletes;
+    use SoftDeletes,Tagable;
 
     protected $fillable = ['title','content','user_id'];
 
@@ -39,10 +40,6 @@ class BlogPost extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function tags()
-    {
-        return $this->morphToMany(Tag::class,'tagable')->withTimestamps();
-    }
 
     public function thumb()
     {
