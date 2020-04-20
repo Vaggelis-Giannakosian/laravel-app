@@ -41,7 +41,7 @@ class BlogPost extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class)->withTimestamps();
+        return $this->morphToMany(Tag::class,'tagable')->withTimestamps();
     }
 
     public function thumb()

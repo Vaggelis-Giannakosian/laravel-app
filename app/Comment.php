@@ -20,6 +20,11 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class,'tagable')->withTimestamps();
+    }
+
     public function commentable()
     {
         return $this->morphTo();
