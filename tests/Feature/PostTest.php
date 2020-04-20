@@ -47,7 +47,11 @@ class PostTest extends TestCase
 
         // Arrange
         $post = $this->createDummyPost();
-        factory(Comment::class,4)->create(['commentable_id'=>$post->id,'commentable_type'=> BlogPost::class]);
+        factory(Comment::class,4)->create([
+            'commentable_id'=>$post->id,
+            'commentable_type'=> BlogPost::class,
+            'user_id' => $this->user()->id
+        ]);
 
 
         // Act
