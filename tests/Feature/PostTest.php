@@ -47,7 +47,7 @@ class PostTest extends TestCase
 
         // Arrange
         $post = $this->createDummyPost();
-        factory(Comment::class,4)->create(['blog_post_id'=>$post->id]);
+        factory(Comment::class,4)->create(['commentable_id'=>$post->id,'commentable_type'=> BlogPost::class]);
 
 
         // Act
@@ -57,9 +57,10 @@ class PostTest extends TestCase
         $this->assertDatabaseHas('blog_posts', [
             'content' => 'Test post content',
         ]);
-        $this->assertDatabaseHas('comments', [
-            'blog_post_id'=> $post->id
-        ]);
+        $this->assertDatabaseHas('comments',[
+            'commentable_id'=>$post->id,
+            'commentable_type'=> BlogPost::class]
+        );
         $response->assertSeeText('Test Post');
         $response->assertSeeText('4 comments');
         $response->assertDontSeeText('Test post content');

@@ -23,7 +23,7 @@ class CommentsTableSeeder extends Seeder
         $commentsCount = (int) $this->command->ask('How many comments would you like?',150);
         factory(App\Comment::class,$commentsCount)->make()->each(function($comment) use ($posts,$users){
 
-            $comment->blogPost()->associate($posts->random()->id);
+            $comment->commentable()->associate($posts->random());
             $comment->user()->associate($users->random()->id);
             $comment->save();
         });

@@ -13,16 +13,16 @@ class Comment extends Model
 
 
     protected $fillable = ['content','user_id'];
-    // blog_post_id
-    //blogPost
-    public function blogPost()
-    {
-        return $this->belongsTo('App\BlogPost');
-    }
+
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function commentable()
+    {
+        return $this->morphTo();
     }
 
     //HANDLING MODEL EVENTS
@@ -31,17 +31,21 @@ class Comment extends Model
         parent::boot();
 
         static::deleting(function(Comment $comment){
-            Cache::tags(['blog-post'])->forget("blog-post-{$comment->blogPost->id}-comments");
+            Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}-comments");
             Cache::tags(['blog-post','blog-common'])->forget("blog-post-most-commented");
         });
 
         static::updating(function(Comment $comment){
-            Cache::tags(['blog-post'])->forget("blog-post-{$comment->blogPost->id}-comments");
+            Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}-comments");
         });
 
         static::creating(function(Comment $comment){
-            Cache::tags(['blog-post'])->forget("blog-post-{$comment->blogPost->id}-comments");
-            Cache::tags(['blog-post','blog-common'])->forget("blog-post-most-commented");
+            if($comment->commentable_type === BlogPost::class)
+            {
+                Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}-comments");
+                Cache::tags(['blog-post','blog-common'])->forget("blog-post-most-commented");
+            }
+
         });
 
     }
