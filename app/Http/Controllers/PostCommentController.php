@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 
 use App\BlogPost;
-use App\Comment;
 use App\Http\Requests\StoreComment;
 
 

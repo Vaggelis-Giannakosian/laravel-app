@@ -19,17 +19,20 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/','HomeController@home')->name('home');
-//    ->middleware('auth');
 Route::get('contact','HomeController@contact')->name('contact');
+
+
 Route::get('secret','HomeController@secret')
     ->name('secret')
     ->middleware('can:home.secret');
+
+
 Route::resource('/posts','PostController');
 
 Route::get('/posts/tag/{tag}','PostTagController@index')->name('posts.tags.index');
 
 Route::resource('posts.comments','PostCommentController')->only(['store']);
-
+Route::resource('users.comments','UserCommentController')->only(['store']);
 Route::resource('users','UserController')->only(['show','edit','update']);
 
 Auth::routes();
