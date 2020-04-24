@@ -1,12 +1,20 @@
 @component('mail::message')
-# Introduction
+# Comment was posted on your blog post
 
-Hello from Markdown
+Hi {{ $comment->commentable->user->name }}
 
-The body of your message.
+Someone has commented on your Blog Post
 
-@component('mail::button', ['url' => ''])
-Button Text
+@component('mail::button', ['url' => route('posts.show',['post'=>$comment->commentable_id])])
+View The Post
+@endcomponent
+
+@component('mail::button', ['url' => route('users.show', [ 'user' => $comment->user_id])] )
+Visit {{ $comment->user->name }} profile
+@endcomponent
+
+@component('mail::panel')
+    {{ $comment->content }}
 @endcomponent
 
 Thanks,<br>
