@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BlogPost;
+use App\Events\BlogPostCreated;
 use App\Http\Requests\StorePost;
 use App\Image;
 use App\User;
@@ -112,6 +113,8 @@ class PostController extends Controller
                 Image::make(['path'=>$path])
             );
         }
+
+        event( new BlogPostCreated($post) );
 
         request()->session()->flash('status','Blog post was created!');
         return redirect()->route('posts.show',['post'=>$post->id]);
