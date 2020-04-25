@@ -37,6 +37,8 @@ class NotifyUsersPostWasCommented implements ShouldQueue
        User::thatHasCommentedOnPost($this->comment->commentable)
            ->get()
            ->filter(fn (User $user) => $user->id !== $this->comment->user->id)
-           ->each(fn(User $user)=> Mail::to($user)->send( new CommentPostedOnPostWatched($this->comment, $user) ) );
+           ->each(fn(User $user)=>  ThrottledMail::dispatch(new CommentPostedOnPostWatched($this->comment, $user), $user ) );
+
+//        Mail::to($user)->send( new CommentPostedOnPostWatched($this->comment, $user) )
     }
 }
