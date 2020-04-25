@@ -26,28 +26,4 @@ class Comment extends Model
         return $this->morphTo();
     }
 
-    //HANDLING MODEL EVENTS
-    public static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function(Comment $comment){
-            Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}-comments");
-            Cache::tags(['blog-post','blog-common'])->forget("blog-post-most-commented");
-        });
-
-        static::updating(function(Comment $comment){
-            Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}-comments");
-        });
-
-        static::created(function(Comment $comment){
-            if($comment->commentable_type === BlogPost::class || $comment->commentable_type === Comment::class)
-            {
-                Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}-comments");
-                Cache::tags(['blog-post','blog-common'])->forget("blog-post-most-commented");
-            }
-
-        });
-
-    }
 }

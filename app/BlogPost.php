@@ -7,7 +7,6 @@ use App\Traits\Tagable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Cache;
 
 class BlogPost extends Model
 {
@@ -57,35 +56,6 @@ class BlogPost extends Model
     {
         static::addGlobalScope(new DeletedAdminScope());
         parent::boot();
-
-
-        //needed so as to perform soft delete on comments (although there already exists a cascade constraint)
-        static::deleting(function(BlogPost $post){
-            $post->comments()->delete();
-            $post->thumb()->delete();
-            Cache::tags(['blog-post'])->forget("blog-post-{$post->id}");
-            Cache::tags(['blog-post','blog-common'])->flush();
-        });
-
-        static::saving(function(BlogPost $post){
-            Cache::tags(['blog-post'])->forget("blog-post-{$post->id}");
-            Cache::tags(['blog-post','blog-common'])->forget("blog-index");
-            Cache::tags(['blog-post','blog-common'])->forget("blog-post-most-commented");
-        });
-
-        static::creating(function(BlogPost $post){
-            Cache::tags(['blog-common'])->flush();
-        });
-
-        static::restored(function(BlogPost $post){
-            $post->comments()->restore();
-            Cache::tags(['blog-post'])->forget("blog-post-{$post->id}");
-            Cache::tags(['blog-post'])->forget("blog-index");
-            Cache::tags(['blog-post'])->forget("blog-post-most-commented");
-            Cache::tags(['blog-post'])->forget("users-most-active");
-            Cache::tags(['blog-post'])->forget("users-most-active-last-month");
-
-        });
     }
 
 
