@@ -14,6 +14,7 @@
 
          <h3>  {{ $user->name }}  </h3>
 
+            <p>{{ trans_choice('messages.people.reading',$counter) }}</p>
 
             <h4>Comments</h4>
 

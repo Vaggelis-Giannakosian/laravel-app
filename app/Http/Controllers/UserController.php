@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUser;
 use App\Image;
+use App\Services\Counter;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -13,8 +14,9 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['show']);
 //        $this->middleware('locale');
+//        $this->middleware("can:update,user")->only(["update","edit"]);
         $this->authorizeResource(User::class,'user');
     }
 
@@ -56,7 +58,11 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.show',['user'=>$user]);
+        $counter = new Counter();
+        return view('users.show',[
+            'user'=>$user,
+            'counter' => $counter->update("user-{$user->id}",['users'])
+        ]);
     }
 
     /**
@@ -66,6 +72,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+//        $this->authorize($user);
         return view('users.edit',['user'=>$user]);
     }
 
@@ -77,6 +84,7 @@ class UserController extends Controller
      */
     public function update(UpdateUser $request, User $user)
     {
+//        $this->authorize($user);
         $validatedData = $request->validated();
 
         if($request->hasFile('avatar'))
