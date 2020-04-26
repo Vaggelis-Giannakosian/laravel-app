@@ -36,7 +36,7 @@ class PostController extends Controller
     }
 
 
-    public function show($id)
+    public function show($id, Counter $counter)
     {
         $post = Cache::tags(['blog-post'])->remember("blog-post-$id",600,function() use($id){
             return BlogPost::with(['user','tags','comments','comments.user','thumb'])->find($id);
@@ -52,8 +52,6 @@ class PostController extends Controller
 //        }])->findOrFail($post->id)->comments;
 
 //        simpler way
-
-        $counter = resolve(Counter::class);
 
         return view('posts.show', [
             'post'=>$post,

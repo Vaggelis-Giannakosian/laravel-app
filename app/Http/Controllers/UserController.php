@@ -56,9 +56,8 @@ class UserController extends Controller
      *
      * @param  \App\User  $user
      */
-    public function show(User $user)
+    public function show(User $user,Counter $counter)
     {
-        $counter = resolve(Counter::class);
         return view('users.show',[
             'user'=>$user,
             'counter' => $counter->update("user-{$user->id}",['users'])
