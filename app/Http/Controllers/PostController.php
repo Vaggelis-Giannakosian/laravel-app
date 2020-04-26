@@ -53,7 +53,7 @@ class PostController extends Controller
 
 //        simpler way
 
-        $counter = new Counter();
+        $counter = resolve(Counter::class);
 
         return view('posts.show', [
             'post'=>$post,
