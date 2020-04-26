@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateUser extends FormRequest
 {
@@ -25,7 +27,11 @@ class UpdateUser extends FormRequest
     {
         return [
             'name' => 'required',
-            'avatar' => 'image|mimes:jpg,jpeg,png,gif,svg|max:1024|dimensions:max_height=500'
+            'avatar' => 'image|mimes:jpg,jpeg,png,gif,svg|max:1024|dimensions:max_height=500',
+            'locale' => [
+                'required',
+                Rule::in(array_keys(User::LOCALES))
+            ]
         ];
     }
 }

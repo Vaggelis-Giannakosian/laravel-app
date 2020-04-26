@@ -27,6 +27,8 @@
             <form style="display: none;" id="logout-form" action="{{ route('logout') }}" method="POST">
                 @csrf
             </form>
+            <a class="p-2 text-dark" href="{{ route('users.show',['user'=>auth()->user()->id]) }}">{{ __('Profile') }}</a>
+            <a class="p-2 text-dark" href="{{ route('users.edit',['user'=>auth()->user()->id]) }}">{{ __('Edit Profile') }}</a>
             <a onclick="event.preventDefault();document.getElementById('logout-form').submit()" class="p-2 text-dark" href="{{ route('login') }}">{{ __('Logout') }} ({{ Auth::user()->name }})</a>
         @endguest
     </nav>

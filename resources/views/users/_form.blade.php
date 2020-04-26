@@ -18,9 +18,18 @@
     <div class="col-8">
 
         <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">{{ __('Name') }}</label>
             <input class="form-control" placeholder="Enter the name..." type="text" name="name" id="name"
                    value="{{ old('name', $user->name?? null) }}">
+        </div>
+
+        <div class="form-group">
+            <label for="locale">{{ __('Language') }}</label>
+            <select  class="form-control"  name="locale" id="locale">
+                @foreach(App\User::LOCALES as $locale => $label)
+                    <option {{ $locale !== $user->locale ?:'selected' }} value="{{$locale}}">{{ $label }}</option>
+                @endforeach
+            </select>
         </div>
 
         <x-errors name="name"/>
