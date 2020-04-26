@@ -18,7 +18,7 @@ class Updated extends Component
     public $name;
     public $userId;
 
-    public function __construct(Carbon $date, string $name='', int $userId=null, string $type='Added ')
+    public function __construct(Carbon $date, string $name='', int $userId=null, string $type='Added')
     {
         $this->type = $type;
         $this->date = $date;

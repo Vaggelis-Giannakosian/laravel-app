@@ -26,11 +26,7 @@
 
                     <x-tags :tags="$post->tags"/>
 
-                    @if($count = $post->comments->count())
-                        <p>{{ $count }} comments</p>
-                    @else
-                        <p>No comments yet!</p>
-                    @endif
+                    <p>{{ trans_choice('messages.comments', $post->comments->count()) }}</p>
 
 
                     @auth
