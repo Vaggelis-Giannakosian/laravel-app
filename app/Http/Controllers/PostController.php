@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\BlogPost;
 use App\Events\BlogPostCreated;
+use App\Facades\CounterFacade;
 use App\Http\Requests\StorePost;
 use App\Image;
-use App\Services\Counter;
+use App\Contracts\CounterContract;
 use App\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -36,7 +37,7 @@ class PostController extends Controller
     }
 
 
-    public function show($id, Counter $counter)
+    public function show($id)
     {
         $post = Cache::tags(['blog-post'])->remember("blog-post-$id",600,function() use($id){
             return BlogPost::with(['user','tags','comments','comments.user','thumb'])->find($id);
@@ -56,7 +57,7 @@ class PostController extends Controller
         return view('posts.show', [
             'post'=>$post,
             'comments' => $comments,
-            'counter' => $counter->update("blog-post-{$id}",['blog-post'])
+            'counter' => CounterFacade::update("blog-post-{$id}",['blog-post'])
         ]);
     }
 

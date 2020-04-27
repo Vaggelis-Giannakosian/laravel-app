@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\BlogPost;
 use App\Events\CommentPosted;
 use App\Http\Requests\StoreComment;
+use App\User;
 
 
 class PostCommentController extends Controller
@@ -16,6 +17,9 @@ class PostCommentController extends Controller
         $this->middleware('auth')->only(['store']);
     }
 
+    public function index(BlogPost $post){
+        return $post->comments;
+    }
 
     public function store(StoreComment $request, BlogPost $post)
     {

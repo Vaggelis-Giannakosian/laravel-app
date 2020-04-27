@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\CounterFacade;
 use App\Http\Requests\UpdateUser;
 use App\Image;
-use App\Services\Counter;
+use App\Contracts\CounterContract;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -56,11 +57,11 @@ class UserController extends Controller
      *
      * @param  \App\User  $user
      */
-    public function show(User $user,Counter $counter)
+    public function show(User $user)
     {
         return view('users.show',[
             'user'=>$user,
-            'counter' => $counter->update("user-{$user->id}",['users'])
+            'counter' => CounterFacade:: update("user-{$user->id}",['users'])
         ]);
     }
 
