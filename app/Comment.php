@@ -15,6 +15,15 @@ class Comment extends Model
 
     protected $fillable = ['content','user_id'];
 
+    protected $hidden = [
+        'deleted_at'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
 
     public function user()
     {
