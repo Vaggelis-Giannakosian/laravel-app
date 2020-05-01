@@ -10,6 +10,8 @@ use App\Observers\CommentObserver;
 use App\Services\Counter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use App\Http\Resources\Comment as CommentResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -50,5 +52,9 @@ class AppServiceProvider extends ServiceProvider
             Counter::class
         );
 //        $this->app->when(Counter::class)->needs('$timeout')->give(env('COUNTER_TIMEOUT',3));
+
+
+        CommentResource::withoutWrapping();
+//        JsonResource::withoutWrapping();
     }
 }
