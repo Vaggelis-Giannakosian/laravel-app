@@ -17,3 +17,23 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::prefix('v1')->name('api.v1.')->namespace('Api\V1')->group(function (){
+
+    Route::get('status',function(){
+       return response()->json(['status'=>'Ok'],200);
+    })->name('status');
+
+    Route::apiResource('posts.comments','PostCommentController');
+});
+
+
+
+Route::prefix('v2')->name('api.v2.')->group(function (){
+
+    Route::get('status',function(){
+        return response()->json(['status'=>true],200);
+    })->name('status');
+
+});
