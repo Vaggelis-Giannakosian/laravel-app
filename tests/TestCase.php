@@ -13,6 +13,11 @@ abstract class TestCase extends BaseTestCase
         return factory(User::class)->create();
     }
 
+    protected function vag()
+    {
+        return factory(User::class)->states('vag')->create();
+    }
+
     protected function blogPost($userId=null)
     {
         return factory(BlogPost::class)->states('test-post')->create([

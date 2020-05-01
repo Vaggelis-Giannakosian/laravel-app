@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 
 class User extends Authenticatable implements JWTSubject
@@ -53,6 +54,12 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function generateToken($email,$password)
+    {
+        $credentials = ['email'=>$email,'password' => $password];
+        return JWTAuth::attempt($credentials);
     }
 
 

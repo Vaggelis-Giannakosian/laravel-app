@@ -79,15 +79,19 @@ class ApiPostCommentsTest extends TestCase
 
         $response = $this->json('POST',"/api/v1/posts/{$post->id}/comments",['content'=>'api-comment-added']);
 
-        $response->assertUnauthorized();
+//        $response->assertUnauthorized();
+        $response->assertJson([
+            "status"=>"Authorization Token not found"
+        ]);
 
     }
 
     public function testAddingCommentsWhenAuthenticated()
     {
         $post = $this->blogPost();
+        $token = $this->vag()->generateToken('e.giannakosian@gmail.com','123456789');
 
-        $response = $this->actingAs($this->user(),'api')->json('POST',"/api/v1/posts/{$post->id}/comments",['content'=>'api-comment-added']);
+        $response = $this->json('POST',"/api/v1/posts/{$post->id}/comments",['content'=>'api-comment-added'],['HTTP_Authorization' => 'Bearer' . $token]);
 
         $this->assertDatabaseHas('comments',[
             'commentable_id'=>$post->id,
@@ -100,8 +104,9 @@ class ApiPostCommentsTest extends TestCase
     public function testAddingCommentsWhenAuthenticatedInvalidData()
     {
         $post = $this->blogPost();
+        $token = $this->vag()->generateToken('e.giannakosian@gmail.com','123456789');
 
-        $response = $this->actingAs($this->user(),'api')->json('POST',"/api/v1/posts/{$post->id}/comments",['content'=>'api']);
+        $response = $this->actingAs($this->user(),'api')->json('POST',"/api/v1/posts/{$post->id}/comments",['content'=>'api'],['HTTP_Authorization' => 'Bearer' . $token]);
 
 
         $this->assertDatabaseMissing('comments',[
